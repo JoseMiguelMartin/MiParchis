@@ -226,7 +226,7 @@ public class Visualizacion extends Partida {
 		nomJugVer = new JTextField ("Fitipaldi");
 		
 		
-		titBotones =new JTextField ("¿JUGAMOS AL PARCHIS v2?");
+		titBotones =new JTextField ("¿JUGAMOS AL PARCHIS v3?");
 		titBotones.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		titBotones.setEditable(false);
 		titBotones.setBackground(Color.GRAY.darker());
