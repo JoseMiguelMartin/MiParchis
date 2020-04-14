@@ -32,7 +32,7 @@ public class PintarPanelTablero extends JPanel {
 				dim[j]= dim[j]*(r.getHeight())/tablero.altoTablero;				
 			}
 		}
-	}
+	} 
 	
 	
 	/**
