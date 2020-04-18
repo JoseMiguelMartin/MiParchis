@@ -3,11 +3,12 @@ package parchis;
 
 
 import javax.swing.*;
+//import java.io.File;
 
 import java.awt.event.*;
 
 import java.awt.*;
-
+import java.net.URL;
 
 public class Visualizacion extends Partida {
 
@@ -70,15 +71,12 @@ public class Visualizacion extends Partida {
 		System.out.printf("Dimensiones tablero %.2f x %.2f\n", tableroW,tableroH);
 		
 		
-		
-		
 		// Botones de cada jugador
 				
 		botJugAma= new JButton("     Juegas?     ");
 		botJugAma.addActionListener(new ActionListener (){
 			@Override
-			public void actionPerformed (ActionEvent e) {
-				if (fase==FasePartida.PREVIA) {					
+			public void actionPerformed (ActionEvent e) {			
 				if (nomJugAma.isEditable()) {
 					nomJugAma.setEditable(false);
 					nomJugAma.setBackground(Color.YELLOW);
@@ -90,15 +88,13 @@ public class Visualizacion extends Partida {
 					botJugAma.setText("Juegas?");
 				}
 				add_remove_jugador(nomJugAma.getText(),ColorFicha.AMARILLO);
-				}
 			}
 		});
 		
 		botJugAzu= new JButton("Juegas?");
 		botJugAzu.addActionListener(new ActionListener (){
 			@Override
-			public void actionPerformed (ActionEvent e) {
-				if (fase==FasePartida.PREVIA) {					
+			public void actionPerformed (ActionEvent e) {			
 				if (nomJugAzu.isEditable()) {
 					nomJugAzu.setEditable(false);
 					nomJugAzu.setBackground(Color.BLUE);
@@ -110,15 +106,13 @@ public class Visualizacion extends Partida {
 					botJugAzu.setText("Juegas?");
 				}
 				add_remove_jugador(nomJugAzu.getText(),ColorFicha.AZUL);
-				}
 			}
 		});
 		
 		botJugRoj= new JButton("Juegas?");
 		botJugRoj.addActionListener(new ActionListener (){
 			@Override
-			public void actionPerformed (ActionEvent e) {
-				if (fase==FasePartida.PREVIA) {					
+			public void actionPerformed (ActionEvent e) {	
 				if (nomJugRoj.isEditable()) {
 					nomJugRoj.setEditable(false);
 					nomJugRoj.setBackground(Color.RED);
@@ -130,7 +124,6 @@ public class Visualizacion extends Partida {
 					botJugRoj.setText("Juegas?");
 				}
 				add_remove_jugador(nomJugRoj.getText(),ColorFicha.ROJO);
-				}
 			}
 		});
 		
@@ -138,7 +131,6 @@ public class Visualizacion extends Partida {
 		botJugVer.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed (ActionEvent e) {
-				if (fase==FasePartida.PREVIA) {					
 				if (nomJugVer.isEditable()) {
 					nomJugVer.setEditable(false);
 					nomJugVer.setBackground(Color.GREEN);
@@ -150,7 +142,6 @@ public class Visualizacion extends Partida {
 					botJugVer.setText("Juegas?");
 				}
 				add_remove_jugador(nomJugVer.getText(),ColorFicha.VERDE);
-				}
 			}
 		});
 		
@@ -168,6 +159,16 @@ public class Visualizacion extends Partida {
 				evento_jugar();
 				texDado.setForeground(jugadores.get(indJugador).get_color().color);
 				texDado.setText(Integer.toString(get_dados()));
+				
+				if (nomJugAma.isEditable()) { nomJugAma.setText(" ");nomJugAma.setEditable(false);}
+				if (nomJugAzu.isEditable()) { nomJugAzu.setText(" ");nomJugAzu.setEditable(false);}
+				if (nomJugRoj.isEditable()) { nomJugRoj.setText(" ");nomJugRoj.setEditable(false);}
+				if (nomJugVer.isEditable()) { nomJugVer.setText(" ");nomJugVer.setEditable(false);}
+				botJugAma.setEnabled(false);
+				botJugAzu.setEnabled(false);
+				botJugRoj.setEnabled(false);
+				botJugVer.setEnabled(false);
+				
 				panel2.repaint();
 			}
 		});
@@ -214,44 +215,57 @@ public class Visualizacion extends Partida {
 		botMover.setBackground(Color.WHITE);
 		botFin.setBackground(Color.WHITE);
 				
-		texDado=new JLabel("_",SwingConstants.CENTER);
-		texDado.setFont(new Font("Courier New",Font.BOLD,40));
-		texDado.setBackground(Color.LIGHT_GRAY);
-		texDado.setOpaque(true);
-		//texDado.setPreferredSize(new Dimension(20,20));
 		
 		nomJugAma = new JTextField ("Felipilla");
 		nomJugAzu = new JTextField ("Ogrita");
 		nomJugRoj = new JTextField ("Teodoro");
-		nomJugVer = new JTextField ("Fitipaldi");
+		nomJugVer = new JTextField ("Fitipaldi");		
+		nomJugAma.setHorizontalAlignment(JTextField.CENTER);
+		nomJugAzu.setHorizontalAlignment(JTextField.CENTER);
+		nomJugRoj.setHorizontalAlignment(JTextField.CENTER);
+		nomJugVer.setHorizontalAlignment(JTextField.CENTER);
 		
-		
-		titBotones =new JTextField ("¿JUGAMOS AL PARCHIS v4?");
+		titBotones =new JTextField ("¿JUGAMOS AL PARCHIS?");
+		titBotones.setHorizontalAlignment(JTextField.CENTER);
 		titBotones.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		titBotones.setEditable(false);
 		titBotones.setBackground(Color.GRAY.darker());
 		titBotones.setForeground(Color.WHITE);
 		
-		
-		imgDado= new ImageIcon("src\\parchis\\img_dado2.png");
+		// No hay manera de que funcione en el ide y en el jar
+		//imgDado= new ImageIcon("src\\parchis\\img_dado2.png");
+		URL resource = this.getClass().getResource("img_dado2.png");
+		imgDado = new ImageIcon (resource);		
 		etiDado= new JLabel ("",imgDado,SwingConstants.CENTER);
 		
+		texDado=new JLabel("_",SwingConstants.CENTER);
+		texDado.setFont(new Font("Courier New",Font.BOLD,55));
+		texDado.setBackground(Color.GRAY);
+		texDado.setOpaque(true);
+		//texDado.setPreferredSize(new Dimension(20,20));
+
+		
 		// Panel izquierdo con los botones
+		/////////////////////////////////////////////////////////////
 		panel1=new JPanel();
 		//panel1.setLayout(new BoxLayout(panel1,BoxLayout.Y_AXIS));
 		panel1.setLayout(new GridBagLayout());
 		panel1.setPreferredSize(new Dimension((int)tablaW,(int)tablaH));
-		panel1.setBorder(BorderFactory.createEmptyBorder(80, 80, 80, 80));
+		//panel1.setBorder(BorderFactory.createEmptyBorder(80, 80, 80, 80));
 		panel1.setBackground(Color.GRAY);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
+		c.ipady=25;
+		c.ipadx=100;		
 		c.fill=GridBagConstraints.BOTH;
 
+		// Cabecera
 		c.gridx=0;	c.gridy=0;
 		c.gridwidth=2;
 		panel1.add(titBotones,c);
 
+		// Botones y nombres jugadores
 		c.gridwidth=1;
 		c.gridx=0;	c.gridy=1;
 		panel1.add(botJugAma,c);
@@ -261,7 +275,7 @@ public class Visualizacion extends Partida {
 		panel1.add(botJugRoj,c);
 		c.gridx=0;	c.gridy=4;
 		panel1.add(botJugVer,c);
-		//
+		
 		c.gridx=1;	c.gridy=1;
 		panel1.add(nomJugAma,c);
 		c.gridx=1;	c.gridy=2;
@@ -271,16 +285,9 @@ public class Visualizacion extends Partida {
 		c.gridx=1;	c.gridy=4;
 		panel1.add(nomJugVer,c);
 
-		c.gridx=0;	c.gridy=6;
-		panel1.add(etiDado,c);
-		
-		c.gridx=1;	c.gridy=6;
-		c.anchor=GridBagConstraints.CENTER;
-		panel1.add(texDado,c);
-		//c.ipady=0;
-		
-		c.gridx=0;	c.gridy=8;
+		// Botones jugar
 		c.gridwidth=2;
+		c.gridx=0;	c.gridy=8;
 		panel1.add(botJugar,c);
 		c.gridx=0;	c.gridy=9;
 		panel1.add(botCambiar,c);
@@ -288,10 +295,19 @@ public class Visualizacion extends Partida {
 		panel1.add(botMover,c);
 		c.gridx=0;	c.gridy=11;
 		panel1.add(botFin,c);
-
+		
+		// Imagen dado  y su valor
+		c.gridwidth=1;
+		c.gridx=0;	c.gridy=12;
+		panel1.add(etiDado,c);
+		c.gridx=1;	c.gridy=12;
+		c.anchor=GridBagConstraints.CENTER;
+		panel1.add(texDado,c);
+		
 		
 			
 		// Panel con el tablero
+		/////////////////////////////////////////////////////////////
 		panel2=new PintarPanelTablero(tablero);
 		panel2.setPreferredSize(new Dimension((int)tableroW,(int)tableroH));
 		panel2.setBackground(Color.LIGHT_GRAY);
