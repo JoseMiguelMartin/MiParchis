@@ -37,9 +37,9 @@ public class Visualizacion extends Partida {
 	
 	private JLabel etiDado;
 	private ImageIcon imgDado;
-	
-	
 	private JLabel texDado;
+	
+	private JTextField salDepu, salDepu2; 
 		
 	
 	public Visualizacion() {
@@ -169,6 +169,7 @@ public class Visualizacion extends Partida {
 				botJugRoj.setEnabled(false);
 				botJugVer.setEnabled(false);
 				
+				pintar_salDepu();
 				panel2.repaint();
 			}
 		});
@@ -180,6 +181,7 @@ public class Visualizacion extends Partida {
 				evento_cambiar_ficha();
 				texDado.setForeground(jugadores.get(indJugador).get_color().color);
 				texDado.setText(Integer.toString(get_dados()));
+				pintar_salDepu();
 				panel2.repaint();
 			}
 
@@ -192,6 +194,7 @@ public class Visualizacion extends Partida {
 				evento_avanzar_ficha();
 				texDado.setForeground(jugadores.get(indJugador).get_color().color);
 				texDado.setText(Integer.toString(get_dados()));
+				pintar_salDepu();
 				panel2.repaint();
 			}
 		});
@@ -205,6 +208,7 @@ public class Visualizacion extends Partida {
 				
 				texDado.setForeground(jugadores.get(indJugador).get_color().color);
 				texDado.setText(Integer.toString(get_dados()));
+				pintar_salDepu();
 				panel2.repaint();
 			}
 
@@ -253,6 +257,11 @@ public class Visualizacion extends Partida {
 		panel1.setPreferredSize(new Dimension((int)tablaW,(int)tablaH));
 		//panel1.setBorder(BorderFactory.createEmptyBorder(80, 80, 80, 80));
 		panel1.setBackground(Color.GRAY);
+
+		
+		salDepu= new JTextField("");
+		salDepu2= new JTextField("");
+		
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -304,6 +313,13 @@ public class Visualizacion extends Partida {
 		c.anchor=GridBagConstraints.CENTER;
 		panel1.add(texDado,c);
 		
+		// Para depurar
+		c.ipady=10;
+		c.gridwidth=2;
+		c.gridx=0;	c.gridy=13;
+		panel1.add(salDepu,c);
+		c.gridx=0;	c.gridy=14;
+		panel1.add(salDepu2,c);
 		
 			
 		// Panel con el tablero
@@ -330,6 +346,11 @@ public class Visualizacion extends Partida {
 		Rectangle r2= panel2.getBounds();
 		System.out.printf("Panel 2 Bounds: %.2f %.2f %.2f %.2f\n",r2.getX(),r2.getY(),r2.getWidth(),r2.getHeight());
 		
+	}
+	
+	private void pintar_salDepu() {
+		salDepu.setText("Jug:"+indJugador + ", Fic:"+indFicha + ", Fas:"+fase + ", Rep:" + repetirJugador);
+		salDepu2.setText("pfAnt:"+posFichaAnterior + ", efAnt:"+estadoFichaAnterior);
 	}
 
 	

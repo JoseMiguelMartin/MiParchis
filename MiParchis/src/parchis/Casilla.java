@@ -42,7 +42,6 @@ public class Casilla {
 	public int get_maxFichas () {
 		return maxFichas;
 	}
-
 	
 	public int get_numFichas() {
 		return fichas.size();
@@ -51,6 +50,8 @@ public class Casilla {
 	public Ficha get_ficha(int i) {
 		return fichas.get(i);
 	}
+	
+	
 	public void add_ficha(Ficha ficha) {
 		fichas.add(ficha);
 	}

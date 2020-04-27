@@ -14,13 +14,13 @@ public class Partida {
 	
 	private boolean movimientoAdicional;
 	private int dadosAdicional;
-	private boolean repetirJugador;
+	protected boolean repetirJugador;
 
 	protected int indJugador;
 	protected int indFicha;
 	
-	private int posFichaAnterior;
-	private EstadoFicha estadoFichaAnterior;
+	protected int posFichaAnterior;
+	protected EstadoFicha estadoFichaAnterior;
 
 	private int numAvances;
 	
@@ -303,7 +303,7 @@ public class Partida {
 		 * mover y devuelve -1.
 		 * Debe tener en cuenta:
 		 * 	- dado=5 -> Si hay ficha en casa debe mover
-		 *  - dado=6 o 12 -> Si hay puente se debe mover (***********************************)
+		 *  - dado=6 o 12 -> Si hay puente se debe mover TODO:
 		 */
 
 		int ini;
