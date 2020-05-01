@@ -353,8 +353,14 @@ public class VisualizacionPartida extends Partida {
 	}
 	
 	private void pintar_salDepu() {
+		int id;
+		if (ficActiva == null)
+			id=0;
+		else
+			id=ficActiva.get_id();
+		
 		//salDepu.setText("Jug:"+indJugador + ", Fic:"+indFicha + ", Fas:"+fase + ", Rep:" + repetirJugador);
-		salDepu.setText("Jug:"+jugActivo.get_nombre() + ", Fic:"+indFicha + ", Fas:"+fase + ", Rep:" + repetirJugador);
+		salDepu.setText("Jug:" + jugActivo.get_nombre() + ", Fic:" + id + ", Fas:"+fase + ", Rep:" + repetirJugador);
 		salDepu2.setText("pfAnt:"+posFichaAnterior + ", efAnt:"+estadoFichaAnterior);
 	}
 
