@@ -1,6 +1,7 @@
 package parchis;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Partida {
@@ -16,8 +17,10 @@ public class Partida {
 	private int dadosAdicional;
 	protected boolean repetirJugador;
 
-	protected int indJugador;
+	//protected int indJugador;
 	protected int indFicha;
+	protected Jugador jugActivo;
+	private Ficha   ficActiva;
 	
 	protected int posFichaAnterior;
 	protected EstadoFicha estadoFichaAnterior;
@@ -39,7 +42,7 @@ public class Partida {
 		dadosAdicional=0;
 		repetirJugador=false;
 		
-		indJugador=0;
+		//indJugador=0;
 		indFicha=0;
 
 		posFichaAnterior=0;
@@ -79,13 +82,15 @@ public class Partida {
 		fase=FasePartida.ELEGIR_FICHA;
 
 		// Jugador inicial (pasamos indice al ultimo para que empiece desde el primero)
-		indJugador=obtener_sig_jugador_activo(jugadores.size()-1);
+		//indJugador=obtener_sig_jugador_activo(jugadores.size()-1);
+		jugActivo=obtener_sig_jugador_activo(jugActivo,jugadores); //nuevo
 
 		// Lanzamos el dado
 		dados=lanzar_dados();
 
 		// Ficha inicial del color del jugador inicial (pasamos indice a la ultima para que empiece desde la primera)
-		indFicha=obtener_sig_ficha_activa (jugadores.get(indJugador).get_color(),fichas.size()-1);		
+		//indFicha=obtener_sig_ficha_activa (jugadores.get(indJugador).get_color(),fichas.size()-1);		
+		indFicha=obtener_sig_ficha_activa (jugActivo.get_color(),fichas.size()-1);
 		// Si no hay siguiente ficha hay que cambiar de turno
 		if (indFicha==-1) {
 			fase= FasePartida.CONFIRMAR;
@@ -120,7 +125,7 @@ public class Partida {
 		 */
 		
 		Ficha ficha;
-		Jugador jugador;
+		//Jugador jugador;
 		
 		if (fase!=FasePartida.ELEGIR_FICHA && fase!=FasePartida.MOVIENDO && fase!=FasePartida.CONFIRMAR) {
 			return;
@@ -129,7 +134,7 @@ public class Partida {
 		if (indFicha == -1) return;
 		
 		
-		jugador=jugadores.get(indJugador);
+		//jugador=jugadores.get(indJugador);
 		ficha=fichas.get(indFicha);
 		
 		// Retrocedemos movimientos a medias o no confirmados
@@ -140,7 +145,8 @@ public class Partida {
 		fase= FasePartida.ELEGIR_FICHA;
 		numAvances=0;
 		
-		indFicha= obtener_sig_ficha_activa(jugador.get_color(),indFicha);
+		//indFicha= obtener_sig_ficha_activa(jugador.get_color(),indFicha);
+		indFicha= obtener_sig_ficha_activa(jugActivo.get_color(),indFicha);
 		// Si no hay siguiente ficha hay que cambiar de turno
 		if (indFicha==-1) {
 			fase= FasePartida.CONFIRMAR;
@@ -151,7 +157,7 @@ public class Partida {
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////
-	public void evento_avanzar_ficha() {
+	public void evento_mover_ficha() {
 		/**
 		 * Avanza la ficha actual del jugador actual una posicion. El avance
 		 * puede ser salir de casa con un 5
@@ -218,7 +224,7 @@ public class Partida {
 
 	
 	/////////////////////////////////////////////////////////////////////////////
-	public void evento_fin_jugada() {
+	public void evento_confirmar_jugada() {
 		/**
 		 * La jugada se ha confirmado.  Se cambia de jugador.
 		 * Si la jugada tiene como consecuencia movimientos adicionales 
@@ -248,14 +254,16 @@ public class Partida {
 		}
 		// Caso general de cambiar jugador y lanzar dados
 		else {
-			indJugador= obtener_sig_jugador_activo(indJugador);
+			//indJugador= obtener_sig_jugador_activo(indJugador);
+			jugActivo= obtener_sig_jugador_activo(jugActivo,jugadores);
 			dados= lanzar_dados();
 		}
 		
 		fase= FasePartida.ELEGIR_FICHA;
 		
 		// Ficha inicial del color del jugador inicial (pasamos indice al ultimo para que empiece desde el primero)
-		indFicha=obtener_sig_ficha_activa (jugadores.get(indJugador).get_color(),fichas.size()-1);		
+		//indFicha=obtener_sig_ficha_activa (jugadores.get(indJugador).get_color(),fichas.size()-1);		
+		indFicha=obtener_sig_ficha_activa (jugActivo.get_color(),fichas.size()-1);
 		// Si no hay siguiente ficha hay que cambiar de turno
 		if (indFicha==-1) {
 			fase= FasePartida.CONFIRMAR;
@@ -295,6 +303,46 @@ public class Partida {
 		
 	}
 
+	public Jugador obtener_sig_jugador_activo (Jugador jugador, ArrayList<Jugador> jugadores ) {
+		/**
+		 * Dado un jugador y la lista de jugadores de la partida, devuelve el siguiente jugador activo 
+		 * al de entrada.
+		 */
+		
+		boolean ini= false;		
+		Iterator<Jugador> iter= jugadores.iterator();
+		Jugador j;
+		// la primera vez no hay jugador activo
+		if (jugador == null) {
+			ini=true;
+		}
+		
+		//iteramos para encontrar el jugador de entrada y el siguiente activo
+		while (iter.hasNext()) {
+			j=iter.next();
+			if (j==jugador) {
+				ini=true;
+				continue;
+			}
+			
+			if (ini && j.get_activo()) {
+				return j;
+			}
+		}
+		
+		// si no hemos hecho return tenemos que probar desde el principio
+		iter= jugadores.iterator();
+		while (iter.hasNext()) {
+			j=iter.next();
+			if ( j.get_activo() && ini) {
+				return j;
+			}
+		}		
+		
+		return jugador;
+		
+	}
+	
 	/////////////////////////////////////////////////////////////////////////////
 	public int obtener_sig_ficha_activa(ColorFicha color, int i) {
 		/**
@@ -385,7 +433,8 @@ public class Partida {
 		// pero si no tiene ningula se devuelve un 12
 		if (randomNum==6) {
 			repetirJugador=true;
-			ColorFicha color= jugadores.get(indJugador).get_color();
+			//ColorFicha color= jugadores.get(indJugador).get_color();
+			ColorFicha color= jugActivo.get_color(); //new
 			for (int i=0; i<fichas.size(); i++) {
 				Ficha ficha= fichas.get(i);
 				if (ficha.get_color()== color && ficha.get_estado()==EstadoFicha.CASA) {
@@ -410,7 +459,7 @@ public class Partida {
 		System.out.print(",MovimientoAdicional:" + movimientoAdicional);
 		System.out.print(",DadosAdicional:" + dadosAdicional);
 		System.out.print(",RepetirJugador:" + repetirJugador);
-		System.out.print(",indJugador:" + indJugador);
+		//System.out.print(",indJugador:" + indJugador);
 		System.out.print(",indFicha:" + indFicha);
 		System.out.print(",posFichaAnterior:" + posFichaAnterior);
 		System.out.print(",EstadoFichaAnterior:" + estadoFichaAnterior);

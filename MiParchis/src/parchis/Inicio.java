@@ -12,7 +12,7 @@ public class Inicio {
 	public static void main(String[] args) {
 		
 		//Partida miPartida= new Partida();
-		javax.swing.SwingUtilities.invokeLater( () -> { @SuppressWarnings("unused") Visualizacion visu= new Visualizacion();});
+		javax.swing.SwingUtilities.invokeLater( () -> { @SuppressWarnings("unused") VisualizacionPartida visu= new VisualizacionPartida();});
 	
 				
 		//miPartida.add_remove_jugador("Pepe",ColorFicha.AMARILLO);

@@ -10,7 +10,7 @@ import java.awt.event.*;
 import java.awt.*;
 import java.net.URL;
 
-public class Visualizacion extends Partida {
+public class VisualizacionPartida extends Partida {
 
 	
 	// Dimensiones pantalla: panel + tablero en coordenadas reales
@@ -42,7 +42,7 @@ public class Visualizacion extends Partida {
 	private JTextField salDepu, salDepu2; 
 		
 	
-	public Visualizacion() {
+	public VisualizacionPartida() {
 
 		double tableroW=0;
 		double tableroH=0;
@@ -157,7 +157,8 @@ public class Visualizacion extends Partida {
 			@Override
 			public void actionPerformed (ActionEvent e) {
 				evento_jugar();
-				texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				//texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				texDado.setForeground(jugActivo.get_color().color); //nuevo
 				texDado.setText(Integer.toString(get_dados()));
 				
 				if (nomJugAma.isEditable()) { nomJugAma.setText(" ");nomJugAma.setEditable(false);}
@@ -179,7 +180,8 @@ public class Visualizacion extends Partida {
 			@Override
 			public void actionPerformed (ActionEvent e) {
 				evento_cambiar_ficha();
-				texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				//texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				texDado.setForeground(jugActivo.get_color().color); 
 				texDado.setText(Integer.toString(get_dados()));
 				pintar_salDepu();
 				panel2.repaint();
@@ -191,8 +193,9 @@ public class Visualizacion extends Partida {
 		botMover.addActionListener(new ActionListener()  {
 			@Override
 			public void actionPerformed (ActionEvent e) {
-				evento_avanzar_ficha();
-				texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				evento_mover_ficha();
+				//texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				texDado.setForeground(jugActivo.get_color().color);
 				texDado.setText(Integer.toString(get_dados()));
 				pintar_salDepu();
 				panel2.repaint();
@@ -204,9 +207,10 @@ public class Visualizacion extends Partida {
 		botFin.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed (ActionEvent e) {
-				evento_fin_jugada();
+				evento_confirmar_jugada();
 				
-				texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				//texDado.setForeground(jugadores.get(indJugador).get_color().color);
+				texDado.setForeground(jugActivo.get_color().color);
 				texDado.setText(Integer.toString(get_dados()));
 				pintar_salDepu();
 				panel2.repaint();
@@ -349,7 +353,8 @@ public class Visualizacion extends Partida {
 	}
 	
 	private void pintar_salDepu() {
-		salDepu.setText("Jug:"+indJugador + ", Fic:"+indFicha + ", Fas:"+fase + ", Rep:" + repetirJugador);
+		//salDepu.setText("Jug:"+indJugador + ", Fic:"+indFicha + ", Fas:"+fase + ", Rep:" + repetirJugador);
+		salDepu.setText("Jug:"+jugActivo.get_nombre() + ", Fic:"+indFicha + ", Fas:"+fase + ", Rep:" + repetirJugador);
 		salDepu2.setText("pfAnt:"+posFichaAnterior + ", efAnt:"+estadoFichaAnterior);
 	}
 
