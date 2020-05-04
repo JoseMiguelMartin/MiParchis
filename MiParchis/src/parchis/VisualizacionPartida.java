@@ -361,7 +361,7 @@ public class VisualizacionPartida extends Partida {
 		
 		//salDepu.setText("Jug:"+indJugador + ", Fic:"+indFicha + ", Fas:"+fase + ", Rep:" + repetirJugador);
 		salDepu.setText("Jug:" + jugActivo.get_nombre() + ", Fic:" + id + ", Fas:"+fase + ", Rep:" + repetirJugador);
-		salDepu2.setText("pfAnt:"+posFichaAnterior + ", efAnt:"+estadoFichaAnterior);
+		//salDepu2.setText("pfAnt:"+posFichaAnterior + ", efAnt:"+estadoFichaAnterior);
 	}
 
 	

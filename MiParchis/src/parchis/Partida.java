@@ -3,6 +3,8 @@ package parchis;
 import java.util.ArrayList;
 //import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Partida {
 
@@ -22,10 +24,12 @@ public class Partida {
 	protected Jugador jugActivo;
 	protected Ficha ficActiva;
 
-	protected int posFichaAnterior;
-	protected EstadoFicha estadoFichaAnterior;
+	//protected int posFichaAnterior;
+	//protected EstadoFicha estadoFichaAnterior;
 
 	private int numAvances;
+	
+	final Logger LOG = Logger.getLogger("parchis.Partida");
 
 	/////////////////////////////////////////////////////////////////////////////
 	public Partida() {
@@ -43,8 +47,8 @@ public class Partida {
 		// indJugador=0;
 		// indFicha=0;
 
-		posFichaAnterior = 0;
-		estadoFichaAnterior = null;
+		//posFichaAnterior = 0;
+		//estadoFichaAnterior = null;
 
 		numAvances = 0;
 
@@ -59,11 +63,13 @@ public class Partida {
 		 * dados.
 		 */
 
+		
 		if (fase != FasePartida.PREVIA)
 			return;
 		if (jugadores.size() == 0)
 			return;
 
+		
 		// Creamos y posicionamos las fichas en el tablero para cada jugador
 		for (int i = 0; i < jugadores.size(); i++) {
 			ColorFicha color = jugadores.get(i).get_color();
@@ -129,10 +135,24 @@ public class Partida {
 		// Ficha ficha;
 		// Jugador jugador;
 
+		try {
+			LOG.log(Level.INFO, fase.toString() +" jug:"+ jugActivo.get_color() );
+			}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no jugActivo" );
+		}		
+		try {		
+			LOG.log(Level.INFO, fase.toString() +" fic:"+ ficActiva.get_color() +" id:"+ ficActiva.get_id() +" err:"+ ficActiva.get_errorMov() +" " );
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no ficActiva" +" ");
+		}
+		
+		
 		if (fase != FasePartida.ELEGIR_FICHA && fase != FasePartida.MOVIENDO && fase != FasePartida.CONFIRMAR) {
 			return;
 		}
-
+		
 		// if (indFicha == -1) return;
 		if (ficActiva == null)
 			return;
@@ -144,7 +164,8 @@ public class Partida {
 		if (fase == FasePartida.CONFIRMAR || fase == FasePartida.MOVIENDO) {
 			// Movimientos.retroceder_ficha(tablero, ficha, posFichaAnterior,
 			// estadoFichaAnterior);
-			Movimientos.retroceder_ficha(tablero, ficActiva, posFichaAnterior, estadoFichaAnterior);
+			//Movimientos.retroceder_ficha(tablero, ficActiva, posFichaAnterior, estadoFichaAnterior);
+			Movimientos.retroceder_ficha(tablero, ficActiva);
 		}
 
 		fase = FasePartida.ELEGIR_FICHA;
@@ -173,17 +194,30 @@ public class Partida {
 		// Ficha ficha;
 		EstadoMovimiento estado;
 
+		try {
+			LOG.log(Level.INFO, fase.toString() +" jug:"+ jugActivo.get_color() );
+			}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no jugActivo" );
+		}		
+		try {		
+			LOG.log(Level.INFO, fase.toString() +" fic:"+ ficActiva.get_color() +" id:"+ ficActiva.get_id() +" "+ ficActiva.get_errorMov() +" " );
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no ficActiva" +" " );
+		}
+		
 		if (fase != FasePartida.ELEGIR_FICHA && fase != FasePartida.MOVIENDO) {
 			return;
 		}
-
+		
 		// Ficha actual
 		// ficha=fichas.get(indFicha);
 
 		// Almacenamos la posicion y estado de la ficha por si hay que reponerlos
 		if (fase == FasePartida.ELEGIR_FICHA) {
-			posFichaAnterior = ficActiva.get_posicion();
-			estadoFichaAnterior = ficActiva.get_estado();
+			//posFichaAnterior    = ficActiva.get_posicion();
+			//estadoFichaAnterior = ficActiva.get_estado();
 		}
 
 		// Si sale un 5 y la ficha esta en casa, la sacamos
@@ -201,7 +235,7 @@ public class Partida {
 		// movimiento.
 		else {
 			fase = FasePartida.MOVIENDO;
-			estado = Movimientos.avanzar_ficha(tablero, ficActiva, (numAvances + 1 == dados));
+			estado = Movimientos.avanzar_ficha_1p(tablero, ficActiva, (numAvances + 1 == dados));
 			if (estado.cod_error == 0) {
 				ficActiva.set_errorMov(false);
 				numAvances++;
@@ -211,7 +245,6 @@ public class Partida {
 			} else {
 				ficActiva.set_errorMov(true);
 			}
-
 		}
 
 		// Si hemos comido o llegado a meta preparamos la segunda parte del turno
@@ -234,9 +267,26 @@ public class Partida {
 		 * realizarse primero. Si la jugada anterior fue un 6 no se cambia de jugador.
 		 */
 
+		try {
+			LOG.log(Level.INFO, fase.toString() +" jug:"+ jugActivo.get_color() );
+			}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no jugActivo" );
+		}		
+		try {		
+			LOG.log(Level.INFO, fase.toString() +" fic:"+ ficActiva.get_color() +" id:"+ ficActiva.get_id() +" err:"+ ficActiva.get_errorMov() +" " );
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no ficActiva" +" " );
+		}
+		
+		
 		if (fase != FasePartida.CONFIRMAR)
 			return;
-
+		
+		if (ficActiva!=null)
+			ficActiva.consolidar_movimiento();
+		
 		// Una vez finalizada la jugada hay que limpiar los posibles estados de error de
 		// las fichas
 		for (int i = 0; i < fichas.size(); i++) {
@@ -312,6 +362,20 @@ public class Partida {
 		int i;
 		int ini;
 
+		try {
+			LOG.log(Level.INFO, fase.toString() +" jug:"+ jugActivo.get_color() );
+			}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no jugActivo" );
+		}		
+		try {		
+			LOG.log(Level.INFO, fase.toString() +" fic:"+ ficActiva.get_color() +" id:"+ ficActiva.get_id() +" err:"+ ficActiva.get_errorMov() +" ");
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no ficActiva" +" ");
+		}
+		
+		
 		// identificamos el elemento en la coleccion
 		// si es null su siguiente será el primero de la coleccion
 		if (jugador == null)
@@ -330,6 +394,7 @@ public class Partida {
 			}
 			// Hemos dado la vuelta completa sin encontrarlo.
 			if (i == ini) {
+				LOG.log(Level.INFO, " no hay siguiente jugador activo");
 				return null;
 			}
 		}
@@ -418,6 +483,21 @@ public class Partida {
 		int i;
 		Ficha ficha2;
 
+		
+		try {
+			LOG.log(Level.INFO, fase.toString() +" jug:"+ jugActivo.get_color() );
+			}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no jugActivo" );
+		}		
+		try {		
+			LOG.log(Level.INFO, fase.toString() +" fic:"+ ficActiva.get_color() +" id:"+ ficActiva.get_id() +" err:"+ ficActiva.get_errorMov() +" ");
+		}
+		catch (Exception e) {
+			LOG.log(Level.INFO, fase.toString() +" "+ "no ficActiva" +" ");
+		}
+		
+		
 		// identificamos el elemento en la coleccion
 		// si es null su siguiente será el primero de la coleccion
 		if (ficha == null)
@@ -461,6 +541,7 @@ public class Partida {
 			}
 			// Hemos dado la vuelta completa sin encontrarlo.
 			if (i == ini) {
+				LOG.log(Level.INFO, "no hay siguiente ficha activa");
 				return null;
 			}
 		}
@@ -525,8 +606,8 @@ public class Partida {
 		System.out.print(",RepetirJugador:" + repetirJugador);
 		// System.out.print(",indJugador:" + indJugador);
 		// System.out.print(",indFicha:" + indFicha);
-		System.out.print(",posFichaAnterior:" + posFichaAnterior);
-		System.out.print(",EstadoFichaAnterior:" + estadoFichaAnterior);
+		//System.out.print(",posFichaAnterior:" + posFichaAnterior);
+		//System.out.print(",EstadoFichaAnterior:" + estadoFichaAnterior);
 		System.out.print(",numAvances:" + numAvances);
 
 	}

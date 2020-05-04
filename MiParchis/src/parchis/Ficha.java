@@ -8,7 +8,8 @@ public class Ficha {
 	private int posicion;
 	private boolean errorMov; 
 	private boolean seleccionada;
-	
+	private int posicionOrigen;
+	private EstadoFicha estadoOrigen;
 	
 	public Ficha (ColorFicha col, int i) {
 		color=col;
@@ -23,6 +24,12 @@ public class Ficha {
 	public void set_posicion (int pos) {
 		posicion=pos;
 	}
+	public void consolidar_movimiento () {
+		posicionOrigen=posicion;
+		estadoOrigen=estado;
+	}
+
+	
 	public void set_errorMov (boolean b) {
 		errorMov=b;
 	}
@@ -41,8 +48,14 @@ public class Ficha {
 	public EstadoFicha get_estado () {
 		return estado;
 	}
+	public EstadoFicha get_estadoOrigen () {
+		return estadoOrigen;
+	}
 	public int get_posicion () {
 		return posicion;
+	}
+	public int get_posicionOrigen () {
+		return posicionOrigen;
 	}
 
 	public boolean get_errorMov () {
