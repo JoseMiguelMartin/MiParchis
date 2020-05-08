@@ -456,7 +456,7 @@ public class Tablero {
 		
 		}
 		else if (pos==POS_META) {
-			x = (anchoCasilla*3)+altoCasilla-1; //salia una linea gorda sin ese -1
+			x = (anchoCasilla*3)+altoCasilla; //salia una linea gorda sin ese -1
 			y = (anchoCasilla*3)+altoCasilla;
 			x2= (anchoCasilla*6)-altoCasilla;
 			y2= (anchoCasilla*6)-altoCasilla;

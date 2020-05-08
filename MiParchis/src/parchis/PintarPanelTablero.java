@@ -104,6 +104,42 @@ public class PintarPanelTablero extends JPanel {
 		g2.draw(triangulo);
 
 		
+		//pintamos las fichas de la casilla meta, segun su color y su id
+		double x_color=0;
+		double y_color=0;
+		final double separa=radioFicha*2.2;				
+		casilla=tablero.get_casilla(tablero.POS_META);		
+		for (int iFicha=0;iFicha< casilla.get_numFichas();iFicha++) {
+			Ficha ficha= casilla.get_ficha(iFicha);
+			switch (ficha.get_color()) {
+				case VERDE:
+					x_color=dim[0] + (radioFicha/5);
+					y_color=dim[1] + (radioFicha*2) + (separa*(ficha.get_id()-1));
+					break;
+				case ROJO:
+					x_color=dim[0] + (radioFicha*2) + (separa*(ficha.get_id()-1));
+					y_color=dim[1] + (radioFicha/5);
+					break;				
+				case AMARILLO:
+					x_color=dim[0] + (radioFicha*2) + (separa*(ficha.get_id()-1));
+					y_color=dim[3] - (radioFicha/5) - (2*radioFicha);
+					break;				
+				case AZUL:
+					x_color=dim[2] - (radioFicha/5) - (2*radioFicha);
+					y_color=dim[1] + (radioFicha*2) + (separa*(ficha.get_id()-1));
+					break;				
+			}
+			g2.setColor(ficha.get_color().color.darker());		
+			g2.fill(new Ellipse2D.Double(x_color ,y_color,radioFicha*2, radioFicha*2 ));
+			g2.setColor(Color.WHITE);
+			Stroke st=g2.getStroke();
+			g2.setStroke(new BasicStroke(01));
+			g2.draw(new Ellipse2D.Double(x_color ,y_color,radioFicha*2, radioFicha*2 ));
+			g2.setStroke(st);
+		}
+		
+		
+		
 		// Pintamos las casas: Una por color y 4 posiciones por color
 		for (int i=0;i<ColorFicha.values().length;i++) {
 			for (int f=1; f<=4;f++) {
